@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>maliyuAccess2003Dll</name>
+    </assembly>
+    <members>
+        <member name="T:maliyuAccess2003Dll.maliyuAccess">
+            <summary>
+            DLL to manipulate Microsoft Access 2003 written by maliyu.
+            </summary>
+        </member>
+        <member name="M:maliyuAccess2003Dll.maliyuAccess.#ctor(System.Data.OleDb.OleDbConnection)">
+            <summary>
+            An OleDbConnection object represents a unique connection to a data source.Client/server database system is not supported.
+            <param name="oleConn"> An instance of OleDbConnection. </param>
+            </summary>
+        </member>
+        <member name="M:maliyuAccess2003Dll.maliyuAccess.QueryWholeDB(System.String)">
+            <summary>
+            Search the string in whole database 
+            </summary>
+            <param name="searchString"> search string. If string is null or empty, then exception will be thrown out</param>
+            <returns >search result store as dataset
+            since search string could be exist in multi tables and multi records in the database
+            </returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,11 @@
+C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\SemtechAssistant.exe
+C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\SemtechAssistant.pdb
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\ResolveAssemblyReference.cache
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.SemtechAssistant.resources
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.Properties.Resources.resources
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.csproj.GenerateResource.Cache
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.exe
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.pdb
+C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.dll
+C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.pdb
+C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.xml
