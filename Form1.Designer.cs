@@ -28,11 +28,13 @@ namespace SemtechAssistant
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SemtechAssistant));
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonLoadDB = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.buttonTripReport = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,13 +81,23 @@ namespace SemtechAssistant
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(659, 22);
             this.statusStrip1.TabIndex = 6;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Text = "No Database";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(129, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 17);
+            this.toolStripStatusLabel1.Text = "No Database";
+            // 
+            // buttonTripReport
+            // 
+            this.buttonTripReport.Location = new System.Drawing.Point(7, 89);
+            this.buttonTripReport.Name = "buttonTripReport";
+            this.buttonTripReport.Size = new System.Drawing.Size(70, 70);
+            this.buttonTripReport.TabIndex = 7;
+            this.buttonTripReport.Text = "Semtech Trip Report";
+            this.buttonTripReport.UseVisualStyleBackColor = true;
+            this.buttonTripReport.Click += new System.EventHandler(this.buttonTripReport_Click);
             // 
             // SemtechAssistant
             // 
@@ -95,13 +107,15 @@ namespace SemtechAssistant
             this.BackgroundImage = global::SemtechAssistant.Properties.Resources.maliyu_background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(659, 418);
+            this.Controls.Add(this.buttonTripReport);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.buttonLoadDB);
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.textBoxSearch);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SemtechAssistant";
             this.Text = "Semtech Assistant";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -116,6 +130,7 @@ namespace SemtechAssistant
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Button buttonTripReport;
 
     }
 }

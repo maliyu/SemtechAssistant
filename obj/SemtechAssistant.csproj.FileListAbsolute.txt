@@ -9,3 +9,5 @@ C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.pdb
 C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.dll
 C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.pdb
 C:\Work\maliyu\Personal\SemtechAssistant\bin\Debug\maliyuAccess2003Dll.xml
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.Resources.FormTripReport.resources
+C:\Work\maliyu\Personal\SemtechAssistant\obj\Debug\SemtechAssistant.csproj.ResolveComReference.cache

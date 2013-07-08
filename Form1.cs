@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using maliyuAccess2003Dll;
+using SemtechAssistant.Resources;
 
 namespace SemtechAssistant
 {
@@ -79,12 +80,16 @@ namespace SemtechAssistant
                     //this.Refresh();
                 }
 
+                Form disForm = new Form();
+                disForm.Text = "Search Result";
+                disForm.WindowState = FormWindowState.Maximized;
+
                 foreach (DataTable tbl in searchResult.Tables)
                 {
                     DataGridView newDGV = new DataGridView();
                     //newDGV.AutoSize = true;
                     newDGV.Anchor = AnchorStyles.Left;
-                    newDGV.Dock = DockStyle.Bottom;
+                    newDGV.Dock = DockStyle.Top;
                     newDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                     newDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                     newDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -99,17 +104,25 @@ namespace SemtechAssistant
                     newDGV.ColumnHeadersDefaultCellStyle.Font = new Font(newDGV.Font, FontStyle.Bold);
                     newDGV.BorderStyle = BorderStyle.Fixed3D;
 
-                    this.Controls.Add(newDGV);
+                    disForm.Controls.Add(newDGV);
                     //this.Invalidate();
                     dgvList.AddLast(newDGV);
                 }
                 //this.Refresh();
+
+                disForm.Show();
             }
         }
 
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             searchString = ((TextBox)sender).Text;
+        }
+
+        private void buttonTripReport_Click(object sender, EventArgs e)
+        {
+            FormTripReport frmTripReport = new FormTripReport();
+            frmTripReport.Show();
         }
 
     }
