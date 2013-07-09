@@ -89,6 +89,7 @@
     <None Include="Resources\open-file-icon 64x64.bmp" />
     <None Include="Resources\Search-icon 64x64.bmp" />
     <None Include="Resources\maliyu_background.JPG" />
+    <Content Include="Resources\Animation.gif" />
     <Content Include="Resources\CreateReport.ico" />
     <Content Include="SemtechAssistant.ico" />
   </ItemGroup>

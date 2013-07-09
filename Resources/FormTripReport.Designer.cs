@@ -36,6 +36,9 @@ namespace SemtechAssistant.Resources
             this.textBoxCustomer = new System.Windows.Forms.TextBox();
             this.textBoxAttendee = new System.Windows.Forms.TextBox();
             this.buttonCreate = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // labelDate
@@ -96,18 +99,29 @@ namespace SemtechAssistant.Resources
             // 
             this.buttonCreate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.buttonCreate.Image = ((System.Drawing.Image)(resources.GetObject("buttonCreate.Image")));
-            this.buttonCreate.Location = new System.Drawing.Point(115, 124);
+            this.buttonCreate.Location = new System.Drawing.Point(115, 147);
             this.buttonCreate.Name = "buttonCreate";
             this.buttonCreate.Size = new System.Drawing.Size(70, 70);
             this.buttonCreate.TabIndex = 6;
             this.buttonCreate.UseVisualStyleBackColor = true;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.pictureBox1.InitialImage = global::SemtechAssistant.Properties.Resources.Animation;
+            this.pictureBox1.Location = new System.Drawing.Point(126, 90);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            // 
             // FormTripReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(292, 262);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.textBoxAttendee);
             this.Controls.Add(this.textBoxCustomer);
@@ -118,6 +132,8 @@ namespace SemtechAssistant.Resources
             this.Name = "FormTripReport";
             this.Text = "Generate Form Trip Report";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormTripReport_FormClosed);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +148,7 @@ namespace SemtechAssistant.Resources
         private System.Windows.Forms.TextBox textBoxCustomer;
         private System.Windows.Forms.TextBox textBoxAttendee;
         private System.Windows.Forms.Button buttonCreate;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

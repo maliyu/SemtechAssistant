@@ -60,6 +60,13 @@ namespace SemtechAssistant.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Animation {
+            get {
+                object obj = ResourceManager.GetObject("Animation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap maliyu_background {
             get {
                 object obj = ResourceManager.GetObject("maliyu_background", resourceCulture);

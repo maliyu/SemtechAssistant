@@ -18,6 +18,7 @@ namespace SemtechAssistant
         maliyuAccess myAccess = null;
         string searchString = null;
         LinkedList<DataGridView> dgvList = null;
+        FormTripReport newFormTripReport = null;
         #endregion
 
         public SemtechAssistant()
@@ -121,8 +122,17 @@ namespace SemtechAssistant
 
         private void buttonTripReport_Click(object sender, EventArgs e)
         {
-            FormTripReport frmTripReport = new FormTripReport();
-            frmTripReport.Show();
+            if (newFormTripReport == null)
+            {
+                newFormTripReport = new FormTripReport(this);
+                newFormTripReport.Show();
+            }
+        }
+
+        public void Close_newFormTripReport()
+        {
+            newFormTripReport.Dispose();
+            newFormTripReport = null;
         }
 
     }
