@@ -14,11 +14,11 @@ namespace SemtechAssistant
     public partial class SemtechAssistant : Form
     {
         #region private Variable
-        private OleDbConnection dbOleConn = null;
-        maliyuAccess myAccess = null;
-        string searchString = null;
-        LinkedList<DataGridView> dgvList = null;
-        FormTripReport newFormTripReport = null;
+        public OleDbConnection dbOleConn = null;
+        public maliyuAccess myAccess = null;
+        public string searchString = null;
+        public LinkedList<DataGridView> dgvList = null;
+        private FormTripReport newFormTripReport = null;
         #endregion
 
         public SemtechAssistant()
@@ -48,6 +48,7 @@ namespace SemtechAssistant
                 dbOleConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + dbPathName + ";");
                 dbOleConn.Open();
                 toolStripStatusLabel1.Text = openFileDialog1.SafeFileName;
+                myAccess = new maliyuAccess(dbOleConn);
             }
         }
 
@@ -55,7 +56,8 @@ namespace SemtechAssistant
         {
             if (myAccess == null)
             {
-                myAccess = new maliyuAccess(dbOleConn);
+                MessageBox.Show("Please select one database before search!");
+                return;
             }
             
             DataSet searchResult = myAccess.QueryWholeDB(searchString);

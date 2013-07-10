@@ -24,5 +24,14 @@
             since search string could be exist in multi tables and multi records in the database
             </returns>
         </member>
+        <member name="M:maliyuAccess2003Dll.maliyuAccess.GetDBRecord(System.String,System.String)">
+            <summary>
+            get record from whole database based on field name and field content 
+            </summary>
+            <param name="FieldName"> Table field name. If database does not contain it, then null will be return </param>
+            <param name="FieldContent"> Table field content. If database does not contain it, then null will be return </param>
+            <returns >It may return multi table and record
+            </returns>
+        </member>
     </members>
 </doc>

@@ -91,43 +91,44 @@ namespace SemtechAssistant.Resources
 
             foreach (Word.Paragraph para in wDoc.Paragraphs)
             {
-                int startPos = para.Range.Text.IndexOf(pattern1);
-                int endPos = para.Range.Text.IndexOf(pattern2);
-                if (startPos > 0 && endPos > 0)
-                {
-                    //startPos += para.Range.Start;
-                    //endPos += para.Range.Start;
-                    searchStrList.Add(para.Range.Text.Substring(startPos, endPos - startPos + 1));
-                }
-            }
-
-            foreach (Word.Table tbl in wDoc.Tables)
-            {
+                string rangStr = para.Range.Text;
                 bool found = true;
 
                 while (found)
                 {
-                    int startPos = tbl.Range.Text.IndexOf(pattern1);
-                    int endPos = tbl.Range.Text.IndexOf(pattern2);
+                    int startPos = rangStr.IndexOf(pattern1);
+                    int endPos = rangStr.IndexOf(pattern2);
                     if (startPos > 0 && endPos > 0)
                     {
-                        searchStrList.Add(tbl.Range.Text.Substring(startPos, endPos - startPos + 1));
-                        tbl.Range.SetRange(tbl.Range.Start + endPos, tbl.Range.End);
+                        searchStrList.Add(rangStr.Substring(startPos, endPos - startPos + 1));
+                        rangStr = rangStr.Substring(endPos + 1);
                     }
                     else
                     {
                         found = false;
                     }
                 }
+            }
 
-                /*int startPos = tbl.Range.Text.IndexOf(pattern1);
-                int endPos = tbl.Range.Text.IndexOf(pattern2);
-                if (startPos > 0 && endPos > 0)
+            foreach (Word.Table tbl in wDoc.Tables)
+            {
+                string rangStr = tbl.Range.Text;
+                bool found = true;
+                
+                while (found)
                 {
-                    //startPos += para.Range.Start;
-                    //endPos += para.Range.Start;
-                    searchStrList.Add(tbl.Range.Text.Substring(startPos, endPos - startPos + 1));
-                }*/
+                    int startPos = rangStr.IndexOf(pattern1);
+                    int endPos = rangStr.IndexOf(pattern2);
+                    if (startPos > 0 && endPos > 0)
+                    {
+                        searchStrList.Add(rangStr.Substring(startPos, endPos - startPos + 1));
+                        rangStr = rangStr.Substring(endPos+1);
+                    }
+                    else
+                    {
+                        found = false;
+                    }
+                }
             }
 
             return searchStrList;
@@ -191,9 +192,35 @@ namespace SemtechAssistant.Resources
                 DataTable dt = new DataTable();
                 //findAndReplace(wordApp, "<Date>", textBoxDate.Text);
                 List<string> searchStr = getSearchString(aDoc, "<", ">");
+                if (searchStr.Capacity == 0)
+                {
+                    throw new Exception("Template file is currupted!");
+                }
+                foreach (string str in searchStr)
+                {
+                    dt.Columns.Add(str);
+                }
+                DataRow newRow = dt.NewRow();
+                newRow["<Customer>"] = textBoxCustomer.Text;
+                newRow["<Date>"] = textBoxDate.Text;
+                newRow["<Attendee>"] = textBoxAttendee.Text;
+                dt.Rows.Add(newRow);
+
+                if (mainForm.myAccess == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                DataSet newSet = mainForm.myAccess.GetDBRecord("Customer", textBoxCustomer.Text);
+                if (newSet == null)
+                {
+                    MessageBox.Show("No such customer in database!");
+                }
+                if (newSet.Tables.Count > 1 || newSet.Tables[0].Rows.Count > 1)
+                {
+                    MessageBox.Show("There are more than one record (same customer) in database! Please check your database.");
+                }
+
                 //  save temp.doc after modified
-                //aDoc.Save();
-                
                 object savedFilename = Environment.CurrentDirectory + "\\SemteckTripReport.doc";
                 aDoc.SaveAs(ref savedFilename, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
                 wordApp.Documents.Close(ref missing, ref missing, ref missing);
@@ -220,14 +247,20 @@ namespace SemtechAssistant.Resources
         private void backgroundWorker1_RunWorkerCompleted(
             object sender, RunWorkerCompletedEventArgs e)
         {
+            this.pictureBox1.Image = null;
+            //this.pictureBox1.Refresh();
+
+            if (e.Cancelled)
+            {
+                this.pictureBox1.Image = Properties.Resources.
+            }
             // First, handle the case where an exception was thrown.
             if (e.Error != null)
             {
                 MessageBox.Show(e.Error.Message);
             }
             
-            this.pictureBox1.Image = null;
-            this.pictureBox1.Refresh();
+            
         }
 
         // This event handler updates the progress bar.
