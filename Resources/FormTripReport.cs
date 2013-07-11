@@ -33,12 +33,32 @@ namespace SemtechAssistant.Resources
 
         private void buttonCreate_Click(object sender, EventArgs e)
         {
+            if (textBoxDate.Text.Length <= 0)
+            {
+                MessageBox.Show("Please input date");
+                return;
+            }
+
+            if (textBoxCustomer.Text.Length <= 0)
+            {
+                MessageBox.Show("Please input customer");
+                return;
+            }
+
+            if (textBoxAttendee.Text.Length <= 0)
+            {
+                MessageBox.Show("Please input attendee");
+                return;
+            }
+
             // Set animated process indicator
-            //pictureBox1.Visible = true;
+            this.pictureBox1.Visible = true;
             this.pictureBox1.Image = Properties.Resources.Animation;
-            this.pictureBox1.Refresh();
+            //this.pictureBox1.Refresh();
 
             backgroundWorker1.RunWorkerAsync();
+
+            buttonCreate.Enabled = false;
         }
 
         private void findAndReplace(Word.Application wApp, object searchObj, object replaceObj)
@@ -59,8 +79,49 @@ namespace SemtechAssistant.Resources
             wApp.Selection.Find.ClearFormatting();
             wApp.Selection.Find.Replacement.ClearFormatting();
             wApp.Selection.Find.Execute(ref searchObj, ref missing, ref missing, ref missing, ref missing,
-        ref missing, ref missing, ref missing, ref missing, ref replaceObj,
-        ref replaceOne, ref missing, ref missing, ref missing, ref missing);
+                                        ref missing, ref missing, ref missing, ref missing, ref replaceObj,
+                                        ref replaceOne, ref missing, ref missing, ref missing, ref missing);
+        }
+
+        private void findAndReplace(Word.Application wApp, DataTable tbl)
+        {
+            if (wApp == null || tbl == null)
+            {
+                throw new System.ArgumentException("Parameter cannot be null", "original");
+            }
+
+            if (tbl.Rows.Count == 0)
+            {
+                throw new System.Exception("table can not be empty");
+            }
+
+            object missing = Missing.Value;
+            object replaceOne = Word.WdReplace.wdReplaceOne;
+
+            wApp.Selection.Find.ClearFormatting();
+            wApp.Selection.Find.Replacement.ClearFormatting();
+            foreach (DataRow row in tbl.Rows)
+            {
+                for (int i = 0; i < tbl.Columns.Count; i++)
+                {
+                    object searchObj = tbl.Columns[i].ColumnName;
+                    object replaceObj = row[tbl.Columns[i].ColumnName].ToString();
+
+                    if (row[tbl.Columns[i].ColumnName].ToString().Length < 250)
+                    {
+                        wApp.Selection.Find.Execute(ref searchObj, ref missing, ref missing, ref missing, ref missing,
+                                                    ref missing, ref missing, ref missing, ref missing, ref replaceObj,
+                                                    ref replaceOne, ref missing, ref missing, ref missing, ref missing);
+                    } 
+                    else
+                    {
+                        wApp.Selection.Find.Execute(ref searchObj, ref missing, ref missing, ref missing, ref missing,
+                                                    ref missing, ref missing, ref missing, ref missing, ref missing,
+                                                    ref missing, ref missing, ref missing, ref missing, ref missing);
+                        wApp.Selection.Text = (string)replaceObj;
+                    }
+                }
+            }
         }
 
         /* Here we search a pattern like <xxx> */
@@ -98,7 +159,7 @@ namespace SemtechAssistant.Resources
                 {
                     int startPos = rangStr.IndexOf(pattern1);
                     int endPos = rangStr.IndexOf(pattern2);
-                    if (startPos > 0 && endPos > 0)
+                    if (startPos >= 0 && endPos >= 0)
                     {
                         searchStrList.Add(rangStr.Substring(startPos, endPos - startPos + 1));
                         rangStr = rangStr.Substring(endPos + 1);
@@ -110,7 +171,7 @@ namespace SemtechAssistant.Resources
                 }
             }
 
-            foreach (Word.Table tbl in wDoc.Tables)
+            /*foreach (Word.Table tbl in wDoc.Tables)
             {
                 string rangStr = tbl.Range.Text;
                 bool found = true;
@@ -119,7 +180,7 @@ namespace SemtechAssistant.Resources
                 {
                     int startPos = rangStr.IndexOf(pattern1);
                     int endPos = rangStr.IndexOf(pattern2);
-                    if (startPos > 0 && endPos > 0)
+                    if (startPos >= 0 && endPos >= 0)
                     {
                         searchStrList.Add(rangStr.Substring(startPos, endPos - startPos + 1));
                         rangStr = rangStr.Substring(endPos+1);
@@ -129,7 +190,7 @@ namespace SemtechAssistant.Resources
                         found = false;
                     }
                 }
-            }
+            }*/
 
             return searchStrList;
         }
@@ -150,8 +211,7 @@ namespace SemtechAssistant.Resources
 
         // This event handler is where the actual,
         // potentially time-consuming work is done.
-        private void backgroundWorker1_DoWork(object sender,
-            DoWorkEventArgs e)
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Get the BackgroundWorker that raised this event.
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -195,30 +255,47 @@ namespace SemtechAssistant.Resources
                 if (searchStr.Capacity == 0)
                 {
                     throw new Exception("Template file is currupted!");
+                    goto Finish;
                 }
+                char[] arr = new char[] { '<', '>' };
                 foreach (string str in searchStr)
                 {
-                    dt.Columns.Add(str);
+                    string newStr = str.Trim(arr);
+                    dt.Columns.Add(newStr);
                 }
+                
                 DataRow newRow = dt.NewRow();
-                newRow["<Customer>"] = textBoxCustomer.Text;
-                newRow["<Date>"] = textBoxDate.Text;
-                newRow["<Attendee>"] = textBoxAttendee.Text;
-                dt.Rows.Add(newRow);
+                newRow["Customer"] = textBoxCustomer.Text;
+                newRow["Date"] = textBoxDate.Text;
+                newRow["Attendee"] = textBoxAttendee.Text;
+                //dt.Rows.Add(newRow);
 
                 if (mainForm.myAccess == null)
                 {
                     throw new ArgumentNullException();
+                    goto Finish;
                 }
-                DataSet newSet = mainForm.myAccess.GetDBRecord("Customer", textBoxCustomer.Text);
+                DataSet newSet = mainForm.myAccess.GetDBRecord("Customers", "Name", textBoxCustomer.Text);
+                //DataSet newSet = mainForm.myAccess.GetDBRecord("Customer", textBoxCustomer.Text);
                 if (newSet == null)
                 {
                     MessageBox.Show("No such customer in database!");
+                    goto Finish;
                 }
                 if (newSet.Tables.Count > 1 || newSet.Tables[0].Rows.Count > 1)
                 {
                     MessageBox.Show("There are more than one record (same customer) in database! Please check your database.");
+                    goto Finish;
                 }
+                foreach (DataColumn col in dt.Columns)
+                {
+                    if (newSet.Tables[0].Columns.Contains(col.ColumnName))
+                    {
+                        newRow[col.ColumnName] = newSet.Tables[0].Rows[0][col.ColumnName];
+                    }
+                }
+                dt.Rows.Add(newRow);
+                findAndReplace(wordApp, dt);
 
                 //  save temp.doc after modified
                 object savedFilename = Environment.CurrentDirectory + "\\SemteckTripReport.doc";
@@ -228,39 +305,55 @@ namespace SemtechAssistant.Resources
             else
             {
                 MessageBox.Show("File does not exist.", "No File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            foreach (Process proc in Process.GetProcessesByName("winword"))
-            {
-                proc.Kill();
+                goto Finish;
             }
 
             // Assign the result of the computation
             // to the Result property of the DoWorkEventArgs
             // object. This is will be available to the 
             // RunWorkerCompleted eventhandler.
-            e.Result = 1;
+            Finish:
+
+                foreach (Process proc in Process.GetProcessesByName("winword"))
+                {
+                    proc.Kill();
+                }
+
+                e.Result = 1;
         }
 
         // This event handler deals with the results of the
         // background operation.
-        private void backgroundWorker1_RunWorkerCompleted(
-            object sender, RunWorkerCompletedEventArgs e)
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.pictureBox1.Image = null;
-            //this.pictureBox1.Refresh();
-
+            /*if (e.Cancelled)
+            {
+                this.pictureBox1.Image = Properties.Resources.Warning;
+            }
+            else if (e.Error != null)
+            {
+                this.pictureBox1.Image = Properties.Resources.Error;
+            }
             if (e.Cancelled)
             {
-                this.pictureBox1.Image = Properties.Resources.
+                this.pictureBox1.Image = Properties.Resources.Warning;
             }
-            // First, handle the case where an exception was thrown.
-            if (e.Error != null)
-            {
-                MessageBox.Show(e.Error.Message);
-            }
-            
-            
+            else
+	        {
+                if (e.Result.Equals(1))
+                {
+                    this.pictureBox1.Image = null;
+                } 
+                else
+                {
+                }
+	        }*/
+
+            this.pictureBox1.Image = null;
+            //this.pictureBox1.Refresh();
+            this.pictureBox1.Visible = false;
+
+            buttonCreate.Enabled = true;
         }
 
         // This event handler updates the progress bar.

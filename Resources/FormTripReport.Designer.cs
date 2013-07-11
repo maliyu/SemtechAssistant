@@ -36,8 +36,8 @@ namespace SemtechAssistant.Resources
             this.textBoxCustomer = new System.Windows.Forms.TextBox();
             this.textBoxAttendee = new System.Windows.Forms.TextBox();
             this.buttonCreate = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,6 +76,7 @@ namespace SemtechAssistant.Resources
             this.textBoxDate.Name = "textBoxDate";
             this.textBoxDate.Size = new System.Drawing.Size(200, 20);
             this.textBoxDate.TabIndex = 3;
+            this.textBoxDate.Text = "2013.9.10";
             // 
             // textBoxCustomer
             // 
@@ -85,6 +86,7 @@ namespace SemtechAssistant.Resources
             this.textBoxCustomer.Name = "textBoxCustomer";
             this.textBoxCustomer.Size = new System.Drawing.Size(200, 20);
             this.textBoxCustomer.TabIndex = 4;
+            this.textBoxCustomer.Text = "VS-I";
             // 
             // textBoxAttendee
             // 
@@ -94,6 +96,7 @@ namespace SemtechAssistant.Resources
             this.textBoxAttendee.Name = "textBoxAttendee";
             this.textBoxAttendee.Size = new System.Drawing.Size(200, 20);
             this.textBoxAttendee.TabIndex = 5;
+            this.textBoxAttendee.Text = "maliyu";
             // 
             // buttonCreate
             // 
@@ -109,12 +112,13 @@ namespace SemtechAssistant.Resources
             // pictureBox1
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.pictureBox1.InitialImage = global::SemtechAssistant.Properties.Resources.Animation;
-            this.pictureBox1.Location = new System.Drawing.Point(126, 90);
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(115, 147);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(70, 70);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // FormTripReport
             // 
@@ -148,7 +152,7 @@ namespace SemtechAssistant.Resources
         private System.Windows.Forms.TextBox textBoxCustomer;
         private System.Windows.Forms.TextBox textBoxAttendee;
         private System.Windows.Forms.Button buttonCreate;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

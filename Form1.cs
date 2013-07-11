@@ -19,11 +19,14 @@ namespace SemtechAssistant
         public string searchString = null;
         public LinkedList<DataGridView> dgvList = null;
         private FormTripReport newFormTripReport = null;
+        protected DataSet searchResult = null;
         #endregion
 
         public SemtechAssistant()
         {
             InitializeComponent();
+
+            InitializeBackgoundWorker();
         }
 
         private void buttonLoadDB_Click(object sender, EventArgs e)
@@ -46,7 +49,7 @@ namespace SemtechAssistant
                     dbOleConn = null;
                 }
                 dbOleConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + dbPathName + ";");
-                dbOleConn.Open();
+                //dbOleConn.Open();
                 toolStripStatusLabel1.Text = openFileDialog1.SafeFileName;
                 myAccess = new maliyuAccess(dbOleConn);
             }
@@ -59,8 +62,71 @@ namespace SemtechAssistant
                 MessageBox.Show("Please select one database before search!");
                 return;
             }
-            
-            DataSet searchResult = myAccess.QueryWholeDB(searchString);
+
+            this.pictureBox1.Visible = true;
+            this.pictureBox1.Image = Properties.Resources.Animation;
+
+            backgroundWorker1.RunWorkerAsync();
+            //DataSet searchResult = myAccess.QueryWholeDB(searchString);
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            searchString = ((TextBox)sender).Text;
+        }
+
+        private void buttonTripReport_Click(object sender, EventArgs e)
+        {
+            if (newFormTripReport == null)
+            {
+                newFormTripReport = new FormTripReport(this);
+                newFormTripReport.Show();
+            }
+        }
+
+        public void Close_newFormTripReport()
+        {
+            newFormTripReport.Dispose();
+            newFormTripReport = null;
+        }
+
+        private void SemtechAssistant_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (dbOleConn != null)
+            {
+                dbOleConn.Close();
+                dbOleConn.Dispose();
+                dbOleConn = null;
+            }           
+        }
+
+        // Set up the BackgroundWorker object by 
+        // attaching event handlers. 
+        private void InitializeBackgoundWorker()
+        {
+            backgroundWorker1.DoWork +=
+                new DoWorkEventHandler(backgroundWorker1_DoWork);
+            backgroundWorker1.RunWorkerCompleted +=
+                new RunWorkerCompletedEventHandler(
+            backgroundWorker1_RunWorkerCompleted);
+            //backgroundWorker1.ProgressChanged +=
+            //    new ProgressChangedEventHandler(
+            //backgroundWorker1_ProgressChanged);
+        }
+
+        // This event handler is where the actual,
+        // potentially time-consuming work is done.
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            searchResult = myAccess.QueryWholeDB(searchString);
+        }
+
+        // This event handler deals with the results of the
+        // background operation.
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.pictureBox1.Image = null;
+            this.pictureBox1.Visible = false;
 
             if (searchResult.Tables.Count <= 0)
             {
@@ -71,7 +137,7 @@ namespace SemtechAssistant
                 if (dgvList == null)
                 {
                     dgvList = new LinkedList<DataGridView>();
-                } 
+                }
                 else
                 {
                     foreach (DataGridView dgv in dgvList)
@@ -116,26 +182,5 @@ namespace SemtechAssistant
                 disForm.Show();
             }
         }
-
-        private void textBoxSearch_TextChanged(object sender, EventArgs e)
-        {
-            searchString = ((TextBox)sender).Text;
-        }
-
-        private void buttonTripReport_Click(object sender, EventArgs e)
-        {
-            if (newFormTripReport == null)
-            {
-                newFormTripReport = new FormTripReport(this);
-                newFormTripReport.Show();
-            }
-        }
-
-        public void Close_newFormTripReport()
-        {
-            newFormTripReport.Dispose();
-            newFormTripReport = null;
-        }
-
     }
 }

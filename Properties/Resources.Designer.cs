@@ -67,6 +67,20 @@ namespace SemtechAssistant.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Error {
+            get {
+                object obj = ResourceManager.GetObject("Error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Information {
+            get {
+                object obj = ResourceManager.GetObject("Information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap maliyu_background {
             get {
                 object obj = ResourceManager.GetObject("maliyu_background", resourceCulture);
@@ -98,6 +112,13 @@ namespace SemtechAssistant.Properties {
         internal static System.Drawing.Bitmap Search_icon_64x64 {
             get {
                 object obj = ResourceManager.GetObject("Search-icon 64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Warning {
+            get {
+                object obj = ResourceManager.GetObject("Warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
