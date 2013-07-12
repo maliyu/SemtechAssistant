@@ -93,6 +93,8 @@
     <Content Include="Resources\CreateReport.ico" />
     <None Include="Resources\Error.png" />
     <None Include="Resources\Information.png" />
+    <None Include="Resources\open_file_icon_64x64.bmp" />
+    <None Include="Resources\Search_icon_64x64.bmp" />
     <Content Include="Resources\Warning.png" />
     <Content Include="SemtechAssistant.ico" />
   </ItemGroup>

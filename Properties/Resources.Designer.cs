@@ -88,30 +88,16 @@ namespace SemtechAssistant.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap open_file_icon {
-            get {
-                object obj = ResourceManager.GetObject("open-file-icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap open_file_icon_64x64 {
             get {
-                object obj = ResourceManager.GetObject("open-file-icon 64x64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap open_file_icon_80x80 {
-            get {
-                object obj = ResourceManager.GetObject("open-file-icon 80x80", resourceCulture);
+                object obj = ResourceManager.GetObject("open_file_icon_64x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         internal static System.Drawing.Bitmap Search_icon_64x64 {
             get {
-                object obj = ResourceManager.GetObject("Search-icon 64x64", resourceCulture);
+                object obj = ResourceManager.GetObject("Search_icon_64x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

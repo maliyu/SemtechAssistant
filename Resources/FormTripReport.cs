@@ -83,9 +83,9 @@ namespace SemtechAssistant.Resources
                                         ref replaceOne, ref missing, ref missing, ref missing, ref missing);
         }
 
-        private void findAndReplace(Word.Application wApp, DataTable tbl)
+        private void findAndReplace(Word.Document wDoc, DataTable tbl)
         {
-            if (wApp == null || tbl == null)
+            if (wDoc == null || tbl == null)
             {
                 throw new System.ArgumentException("Parameter cannot be null", "original");
             }
@@ -96,29 +96,63 @@ namespace SemtechAssistant.Resources
             }
 
             object missing = Missing.Value;
-            object replaceOne = Word.WdReplace.wdReplaceOne;
+            object matchCase = true;
+            object matchWholeWord = true;
+            object replace = Word.WdReplace.wdReplaceOne;
 
-            wApp.Selection.Find.ClearFormatting();
-            wApp.Selection.Find.Replacement.ClearFormatting();
             foreach (DataRow row in tbl.Rows)
             {
                 for (int i = 0; i < tbl.Columns.Count; i++)
                 {
-                    object searchObj = tbl.Columns[i].ColumnName;
-                    object replaceObj = row[tbl.Columns[i].ColumnName].ToString();
+                    object findText = "<" + tbl.Columns[i].ColumnName + ">";
+                    object replaceWith = row[tbl.Columns[i].ColumnName].ToString();
 
-                    if (row[tbl.Columns[i].ColumnName].ToString().Length < 250)
+                    Word.Range range = wDoc.Content;
+                    range.Find.ClearFormatting();
+                    range.Find.Replacement.ClearFormatting();
+
+                    if (((string)replaceWith).Length < 255)
                     {
-                        wApp.Selection.Find.Execute(ref searchObj, ref missing, ref missing, ref missing, ref missing,
-                                                    ref missing, ref missing, ref missing, ref missing, ref replaceObj,
-                                                    ref replaceOne, ref missing, ref missing, ref missing, ref missing);
+                        range.Find.Execute(
+                            ref findText,
+                            ref matchCase,
+                            ref matchWholeWord,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref replaceWith,
+                            ref replace,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing
+                            );
                     } 
                     else
                     {
-                        wApp.Selection.Find.Execute(ref searchObj, ref missing, ref missing, ref missing, ref missing,
-                                                    ref missing, ref missing, ref missing, ref missing, ref missing,
-                                                    ref missing, ref missing, ref missing, ref missing, ref missing);
-                        wApp.Selection.Text = (string)replaceObj;
+                        range.Find.Execute(
+                            ref findText,
+                            ref matchCase,
+                            ref matchWholeWord,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing,
+                            ref missing
+                            );
+
+                        //range.Delete()
+                        range.Text = (string)replaceWith;
                     }
                 }
             }
@@ -255,71 +289,75 @@ namespace SemtechAssistant.Resources
                 if (searchStr.Capacity == 0)
                 {
                     throw new Exception("Template file is currupted!");
-                    goto Finish;
+                    //goto Finish;
                 }
-                char[] arr = new char[] { '<', '>' };
-                foreach (string str in searchStr)
+                else
                 {
-                    string newStr = str.Trim(arr);
-                    dt.Columns.Add(newStr);
-                }
-                
-                DataRow newRow = dt.NewRow();
-                newRow["Customer"] = textBoxCustomer.Text;
-                newRow["Date"] = textBoxDate.Text;
-                newRow["Attendee"] = textBoxAttendee.Text;
-                //dt.Rows.Add(newRow);
-
-                if (mainForm.myAccess == null)
-                {
-                    throw new ArgumentNullException();
-                    goto Finish;
-                }
-                DataSet newSet = mainForm.myAccess.GetDBRecord("Customers", "Name", textBoxCustomer.Text);
-                //DataSet newSet = mainForm.myAccess.GetDBRecord("Customer", textBoxCustomer.Text);
-                if (newSet == null)
-                {
-                    MessageBox.Show("No such customer in database!");
-                    goto Finish;
-                }
-                if (newSet.Tables.Count > 1 || newSet.Tables[0].Rows.Count > 1)
-                {
-                    MessageBox.Show("There are more than one record (same customer) in database! Please check your database.");
-                    goto Finish;
-                }
-                foreach (DataColumn col in dt.Columns)
-                {
-                    if (newSet.Tables[0].Columns.Contains(col.ColumnName))
+                    char[] arr = new char[] { '<', '>' };
+                    foreach (string str in searchStr)
                     {
-                        newRow[col.ColumnName] = newSet.Tables[0].Rows[0][col.ColumnName];
+                        string newStr = str.Trim(arr);
+                        dt.Columns.Add(newStr);
+                    }
+
+                    DataRow newRow = dt.NewRow();
+                    newRow["Customer"] = textBoxCustomer.Text;
+                    newRow["Date"] = textBoxDate.Text;
+                    newRow["Attendee"] = textBoxAttendee.Text;
+                    //dt.Rows.Add(newRow);
+
+                    if (mainForm.myAccess == null)
+                    {
+                        throw new ArgumentNullException();
+                    }
+                    else
+                    {
+                        //DataSet newSet = mainForm.myAccess.GetDBRecord("Customers", "Name", textBoxCustomer.Text);
+                        DataSet newSet = mainForm.myAccess.QueryWholeDB(textBoxCustomer.Text);
+                        //DataSet newSet = mainForm.myAccess.GetDBRecord("Customer", textBoxCustomer.Text);
+                        if (newSet == null)
+                        {
+                            MessageBox.Show("No such customer in database!");
+                        }
+                        else
+                        {
+                            foreach (DataColumn col in dt.Columns)
+                            {
+                                foreach (DataTable tbl in newSet.Tables)
+                                {
+                                    if (tbl.Columns.Contains(col.ColumnName))
+                                    {
+                                        newRow[col.ColumnName] = tbl.Rows[0][col.ColumnName];
+                                    }
+                                }
+                            }
+                            dt.Rows.Add(newRow);
+                            findAndReplace(aDoc, dt);
+
+                            //  save temp.doc after modified
+                            object savedFilename = Environment.CurrentDirectory + "\\SemteckTripReport.doc";
+                            aDoc.SaveAs(ref savedFilename, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+                            wordApp.Documents.Close(ref missing, ref missing, ref missing);
+                        }
                     }
                 }
-                dt.Rows.Add(newRow);
-                findAndReplace(wordApp, dt);
-
-                //  save temp.doc after modified
-                object savedFilename = Environment.CurrentDirectory + "\\SemteckTripReport.doc";
-                aDoc.SaveAs(ref savedFilename, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-                wordApp.Documents.Close(ref missing, ref missing, ref missing);
             }
             else
             {
                 MessageBox.Show("File does not exist.", "No File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                goto Finish;
             }
 
             // Assign the result of the computation
             // to the Result property of the DoWorkEventArgs
             // object. This is will be available to the 
             // RunWorkerCompleted eventhandler.
-            Finish:
 
-                foreach (Process proc in Process.GetProcessesByName("winword"))
-                {
-                    proc.Kill();
-                }
+            foreach (Process proc in Process.GetProcessesByName("winword"))
+            {
+                proc.Kill();
+            }
 
-                e.Result = 1;
+            e.Result = 1;
         }
 
         // This event handler deals with the results of the

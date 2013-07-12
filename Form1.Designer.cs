@@ -68,6 +68,7 @@ namespace SemtechAssistant
             this.buttonSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSearch.AutoSize = true;
             this.buttonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonSearch.Enabled = false;
             this.buttonSearch.Image = global::SemtechAssistant.Properties.Resources.Search_icon_64x64;
             this.buttonSearch.Location = new System.Drawing.Point(565, 12);
             this.buttonSearch.Name = "buttonSearch";
@@ -94,6 +95,7 @@ namespace SemtechAssistant
             // 
             // buttonTripReport
             // 
+            this.buttonTripReport.Enabled = false;
             this.buttonTripReport.Location = new System.Drawing.Point(7, 89);
             this.buttonTripReport.Name = "buttonTripReport";
             this.buttonTripReport.Size = new System.Drawing.Size(70, 70);
@@ -105,6 +107,7 @@ namespace SemtechAssistant
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(565, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(70, 70);

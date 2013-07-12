@@ -52,6 +52,9 @@ namespace SemtechAssistant
                 //dbOleConn.Open();
                 toolStripStatusLabel1.Text = openFileDialog1.SafeFileName;
                 myAccess = new maliyuAccess(dbOleConn);
+
+                this.buttonSearch.Enabled = true;
+                this.buttonTripReport.Enabled = true;
             }
         }
 
